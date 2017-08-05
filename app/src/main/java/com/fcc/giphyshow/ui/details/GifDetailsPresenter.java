@@ -24,7 +24,7 @@ public class GifDetailsPresenter {
         this.gifDetailsController = view;
         element = (SearchElement) gifDetailsController.getArgs().getSerializable(ELEMENT_BUNDLE_KEY);
         view.printLogo(element.getImages().getOriginal().getUrl());
-
+        view.startPlayer(element.getImages().getLooping().getMp4());
     }
 
 }
