@@ -65,4 +65,7 @@ dependencies {
     //picasso
     compile "com.squareup.picasso:picasso:$picasso"
     compile "com.jakewharton.picasso:picasso2-okhttp3-downloader:$okhttp3Downloader"
+    //exoplayer
+    compile "com.google.android.exoplayer:exoplayer-core:$exoplayer"
+    compile "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
 }

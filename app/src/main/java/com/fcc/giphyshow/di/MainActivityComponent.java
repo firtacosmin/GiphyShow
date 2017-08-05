@@ -7,6 +7,7 @@ import com.fcc.giphyshow.di.mainActivity.modules.SearchListAdapterModule;
 import com.fcc.giphyshow.di.mainActivity.modules.SearchListControllerModule;
 import com.fcc.giphyshow.ui.details.GifDetailsController;
 import com.fcc.giphyshow.ui.search.SearchViewController;
+import com.squareup.picasso.Picasso;
 
 import dagger.Component;
 
@@ -17,10 +18,9 @@ import dagger.Component;
 @MainActivityScope
 @Component(modules = {RouterModule.class,SearchListControllerModule.class, SearchListAdapterModule.class}, dependencies = MainAppComponent.class)
 public interface MainActivityComponent {
-
+    Picasso getPicasso();
     void injectMainActivity(MainActivity activity);
 
     void injectSearchViewController(SearchViewController searchViewController);
 
-    void injectGifDetailsController(GifDetailsController gifDetailsController);
 }

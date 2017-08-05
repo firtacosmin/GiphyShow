@@ -10,6 +10,7 @@ import com.bluelinelabs.conductor.RouterTransaction;
 import com.fcc.giphyshow.di.DaggerMainActivityComponent;
 import com.fcc.giphyshow.di.MainActivityComponent;
 import com.fcc.giphyshow.di.mainActivity.modules.RouterModule;
+import com.fcc.giphyshow.ui.Navigator;
 import com.fcc.giphyshow.ui.search.SearchListAdapter;
 import com.fcc.giphyshow.ui.search.SearchViewController;
 import com.squareup.picasso.Picasso;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 //    @Inject
 //    SearchListAdapter adapter;
 
+    @Inject
+    Navigator navigator;
+
     private Router router;
 
 
@@ -55,16 +59,14 @@ public class MainActivity extends AppCompatActivity {
         diComponent.injectMainActivity(this);
 
 
-        if (!router.hasRootController()) {
-            router.setRoot(RouterTransaction.with( new SearchViewController()));
-        }
+        navigator.navigateToLandingPage();
 
 
     }
 
     @Override
     public void onBackPressed() {
-        if (!router.handleBack()) {
+        if (navigator.onBackPressed()) {
             super.onBackPressed();
         }
     }

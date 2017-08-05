@@ -65,5 +65,7 @@ ext{
     picasso = "2.5.0"
     okhttp3Downloader = "1.0.2"
 
+    exoplayer = "r2.4.4"
+
 }
 

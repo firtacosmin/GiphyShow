@@ -1,5 +1,6 @@
 package com.fcc.giphyshow.ui.search;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
 import com.bluelinelabs.conductor.Router;
@@ -8,17 +9,15 @@ import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.fcc.giphyshow.data.search.SearchRepo;
 import com.fcc.giphyshow.data.search.request.SearchElement;
 import com.fcc.giphyshow.data.search.request.SearchResponse;
-import com.fcc.giphyshow.di.application.MainAppScope;
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
-import com.fcc.giphyshow.ui.details.GifDetailsController;
+import com.fcc.giphyshow.ui.Navigator;
 
 import javax.inject.Inject;
 
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.fcc.giphyshow.ui.details.GifDetailsPresenter.ELEMENT_BUNDLE_KEY;
 
 /**
  * Created by firta on 8/5/2017.
@@ -31,12 +30,14 @@ public class SearchViewPresenter {
     private SearchView searchView;
     private SearchRepo repo;
     private Router router;
+    private Navigator navigator;
     private SearchResponse result;
 
     @Inject
-    public SearchViewPresenter(SearchRepo repo, Router router){
+    public SearchViewPresenter(SearchRepo repo, Router router, Navigator navigator){
         this.repo = repo;
         this.router = router;
+        this.navigator = navigator;
     }
 
     public void bindView(SearchView searchView){
@@ -95,10 +96,9 @@ public class SearchViewPresenter {
         if ( result != null && result.getPagination().getCount() > 0 ) {
 
             SearchElement element = result.getData().get(adapterPosition);
-            router.pushController(RouterTransaction
-                    .with(new GifDetailsController(element))
-                    .pushChangeHandler(new FadeChangeHandler())
-                    .popChangeHandler(new FadeChangeHandler()));
+            Bundle dataToPass = new Bundle();
+            dataToPass.putSerializable(ELEMENT_BUNDLE_KEY, element);
+            navigator.navigateToDetails(dataToPass);
         }
     }
 }

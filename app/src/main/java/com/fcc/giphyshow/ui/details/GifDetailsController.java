@@ -13,6 +13,9 @@ import com.bluelinelabs.conductor.Controller;
 import com.fcc.giphyshow.MainActivity;
 import com.fcc.giphyshow.R;
 import com.fcc.giphyshow.data.search.request.SearchElement;
+import com.fcc.giphyshow.di.DaggerGifDetailsComponent;
+import com.fcc.giphyshow.di.GifDetailsComponent;
+import com.fcc.giphyshow.di.details.modules.GifDetailsViewModule;
 import com.fcc.giphyshow.utils.BundleBuilder;
 import com.squareup.picasso.Picasso;
 
@@ -27,14 +30,7 @@ import butterknife.ButterKnife;
  * give the possibility to play and to rate it
  */
 
-public class GifDetailsController extends Controller{
-    private static final String KEY_ELEMENT = "KEY_ELEMENT";
-
-    /**
-     * the {@link SearchElement} of whom we are displaying details
-     */
-    private SearchElement element = (SearchElement) getArgs().getSerializable(KEY_ELEMENT);
-
+public class GifDetailsController extends Controller implements GifDetailsView{
     @BindView(R.id.title_txt)
     TextView titleTxt;
     @BindView(R.id.logo_img)
@@ -45,13 +41,9 @@ public class GifDetailsController extends Controller{
     @Inject
     Picasso picasso;
 
+    @Inject
+    GifDetailsPresenter presenter;
 
-
-    public GifDetailsController(SearchElement element) {
-        this(new BundleBuilder(new Bundle())
-                .putSerializable(KEY_ELEMENT, element)
-                .build());
-    }
 
     public GifDetailsController(Bundle args) {
         super(args);
@@ -62,12 +54,36 @@ public class GifDetailsController extends Controller{
     protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
         View view = inflater.inflate(R.layout.controller_view_details, container, false);
         ButterKnife.bind(this, view);
-        ((MainActivity)getActivity()).getDiComponent().injectGifDetailsController(this);
+
+        GifDetailsComponent diComponent = DaggerGifDetailsComponent
+                .builder()
+                .mainActivityComponent(((MainActivity)getActivity()).getDiComponent())
+                .gifDetailsViewModule(new GifDetailsViewModule(this))
+                .build();
+        diComponent.injectInController(this);
 
 
-        picasso.load(element.getImages().getOriginal().getUrl()).into(logoImg);
+//        ((MainActivity)getActivity()).getDiComponent().injectGifDetailsController(this);
+
+
+//        picasso.load(element.getImages().getOriginal().getUrl()).into(logoImg);
 //        titleTxt.setText(element.getSlug());
 
         return view;
+    }
+
+    @Override
+    public void printTitle(String title) {
+        titleTxt.setText(title);
+    }
+
+    @Override
+    public void printLogo(String logoURL) {
+        picasso.load(logoURL).into(logoImg);
+    }
+
+    @Override
+    public void startPlayer(String playbackURL) {
+
     }
 }
