@@ -4,7 +4,9 @@ package com.fcc.giphyshow.data.search.request;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FixedHeightStill {
+import java.io.Serializable;
+
+public class FixedHeightStill  implements Serializable {
 
     @SerializedName("url")
     @Expose

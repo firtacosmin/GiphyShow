@@ -4,7 +4,9 @@ package com.fcc.giphyshow.data.search.request;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class OriginalMp4 {
+import java.io.Serializable;
+
+public class OriginalMp4  implements Serializable {
 
     @SerializedName("width")
     @Expose

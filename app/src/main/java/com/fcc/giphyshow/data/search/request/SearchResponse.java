@@ -1,11 +1,12 @@
 
 package com.fcc.giphyshow.data.search.request;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SearchResponse {
+public class SearchResponse  implements Serializable {
 
     @SerializedName("data")
     @Expose
