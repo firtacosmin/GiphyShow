@@ -2,8 +2,10 @@ package com.fcc.giphyshow.di;
 
 import com.fcc.giphyshow.MainActivity;
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
+import com.fcc.giphyshow.di.mainActivity.modules.RouterModule;
 import com.fcc.giphyshow.di.mainActivity.modules.SearchListAdapterModule;
 import com.fcc.giphyshow.di.mainActivity.modules.SearchListControllerModule;
+import com.fcc.giphyshow.ui.details.GifDetailsController;
 import com.fcc.giphyshow.ui.search.SearchViewController;
 
 import dagger.Component;
@@ -13,10 +15,12 @@ import dagger.Component;
  * The component for {@link com.fcc.giphyshow.MainActivity}
  */
 @MainActivityScope
-@Component(modules = {SearchListControllerModule.class, SearchListAdapterModule.class}, dependencies = MainAppComponent.class)
+@Component(modules = {RouterModule.class,SearchListControllerModule.class, SearchListAdapterModule.class}, dependencies = MainAppComponent.class)
 public interface MainActivityComponent {
 
     void injectMainActivity(MainActivity activity);
 
     void injectSearchViewController(SearchViewController searchViewController);
+
+    void injectGifDetailsController(GifDetailsController gifDetailsController);
 }

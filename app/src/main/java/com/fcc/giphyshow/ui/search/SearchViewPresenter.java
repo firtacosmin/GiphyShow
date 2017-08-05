@@ -2,11 +2,15 @@ package com.fcc.giphyshow.ui.search;
 
 import android.support.v7.widget.RecyclerView;
 
+import com.bluelinelabs.conductor.Router;
+import com.bluelinelabs.conductor.RouterTransaction;
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.fcc.giphyshow.data.search.SearchRepo;
 import com.fcc.giphyshow.data.search.request.SearchElement;
 import com.fcc.giphyshow.data.search.request.SearchResponse;
 import com.fcc.giphyshow.di.application.MainAppScope;
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
+import com.fcc.giphyshow.ui.details.GifDetailsController;
 
 import javax.inject.Inject;
 
@@ -26,11 +30,13 @@ public class SearchViewPresenter {
 
     private SearchView searchView;
     private SearchRepo repo;
+    private Router router;
     private SearchResponse result;
 
     @Inject
-    public SearchViewPresenter(SearchRepo repo){
+    public SearchViewPresenter(SearchRepo repo, Router router){
         this.repo = repo;
+        this.router = router;
     }
 
     public void bindView(SearchView searchView){
@@ -78,6 +84,21 @@ public class SearchViewPresenter {
             SearchElement el = result.getData().get(position);
             view.setDesc(el.getSlug());
             view.setImage(el.getImages().getOriginal().getUrl());
+        }
+    }
+
+    /**
+     * callback when an item of the list is clicked
+     * @param adapterPosition the position of the clicked item
+     */
+    public void itemClicked(int adapterPosition) {
+        if ( result != null && result.getPagination().getCount() > 0 ) {
+
+            SearchElement element = result.getData().get(adapterPosition);
+            router.pushController(RouterTransaction
+                    .with(new GifDetailsController(element))
+                    .pushChangeHandler(new FadeChangeHandler())
+                    .popChangeHandler(new FadeChangeHandler()));
         }
     }
 }

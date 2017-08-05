@@ -9,6 +9,7 @@ import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.fcc.giphyshow.di.DaggerMainActivityComponent;
 import com.fcc.giphyshow.di.MainActivityComponent;
+import com.fcc.giphyshow.di.mainActivity.modules.RouterModule;
 import com.fcc.giphyshow.ui.search.SearchListAdapter;
 import com.fcc.giphyshow.ui.search.SearchViewController;
 import com.squareup.picasso.Picasso;
@@ -41,17 +42,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
+        router = Conductor.attachRouter(this, container, savedInstanceState);
 
         /*init the dagger component*/
         diComponent = DaggerMainActivityComponent
                 .builder()
                 .mainAppComponent(((MainApp)getApplication()).getDiComponent())
+                .routerModule(new RouterModule(router))
                 .build();
         diComponent.injectMainActivity(this);
 
 
-        router = Conductor.attachRouter(this, container, savedInstanceState);
         if (!router.hasRootController()) {
             router.setRoot(RouterTransaction.with( new SearchViewController()));
         }

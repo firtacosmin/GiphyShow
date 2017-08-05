@@ -48,6 +48,9 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Se
     @Override
     public void onBindViewHolder(SearchListItemHolder holder, int position) {
         presenter.onBindViewHolder(holder, position);
+        holder.itemView.setOnClickListener(view ->{
+            presenter.itemClicked(holder.getAdapterPosition());
+        });
     }
 
     @Override
