@@ -1,0 +1,73 @@
+package com.fcc.giphyshow;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.ViewGroup;
+
+import com.bluelinelabs.conductor.Conductor;
+import com.bluelinelabs.conductor.Router;
+import com.bluelinelabs.conductor.RouterTransaction;
+import com.fcc.giphyshow.di.DaggerMainActivityComponent;
+import com.fcc.giphyshow.di.MainActivityComponent;
+import com.fcc.giphyshow.ui.search.SearchListAdapter;
+import com.fcc.giphyshow.ui.search.SearchViewController;
+import com.squareup.picasso.Picasso;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+//import com.fcc.giphyshow.di.mainActivity.DaggerMainActivityComponent;
+
+public class MainActivity extends AppCompatActivity {
+
+    MainActivityComponent diComponent;
+
+    @BindView(R.id.main_container)
+    ViewGroup container;
+
+
+//    @Inject
+//    Picasso picasso;
+
+//    @Inject
+//    SearchListAdapter adapter;
+
+    private Router router;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        /*init the dagger component*/
+        diComponent = DaggerMainActivityComponent
+                .builder()
+                .mainAppComponent(((MainApp)getApplication()).getDiComponent())
+                .build();
+        diComponent.injectMainActivity(this);
+
+
+        router = Conductor.attachRouter(this, container, savedInstanceState);
+        if (!router.hasRootController()) {
+            router.setRoot(RouterTransaction.with( new SearchViewController()));
+        }
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!router.handleBack()) {
+            super.onBackPressed();
+        }
+    }
+
+
+    public MainActivityComponent getDiComponent() {
+        return diComponent;
+    }
+}

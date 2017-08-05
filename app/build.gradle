@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    defaultConfig {
+        applicationId "com.fcc.giphyshow"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+//        jackOptions {
+//            enabled true
+//        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile("com.android.support.test.espresso:espresso-core:2.2.2", {
+        exclude group: "com.android.support", module: "support-annotations"
+    })
+    compile "com.android.support:appcompat-v7:$appcompat"
+    compile "com.android.support:recyclerview-v7:$appcompat"
+    compile "com.android.support.constraint:constraint-layout:$constraint"
+    testCompile "junit:junit:$junit"
+    //dagger
+    compile "com.google.dagger:dagger:$dagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger"
+    compile "com.google.dagger:dagger-android:$dagger"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger"
+
+    //butterknife
+    compile "com.jakewharton:butterknife:$butterknife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife"
+    //rxjava
+    compile "io.reactivex.rxjava2:rxjava:$rxjava"
+    compile "io.reactivex.rxjava2:rxandroid:$rxandroid"
+    //okhttp3
+    compile "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    //retrofit
+    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    compile "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$rxjavaretrofit"
+    //conductor
+    compile "com.bluelinelabs:conductor:$conductor"
+    compile "com.bluelinelabs:conductor-support:$conductor"
+    //pesistent search
+    compile 'com.quinny898.library.persistentsearch:library:1.1.0-SNAPSHOT'
+    //picasso
+    compile "com.squareup.picasso:picasso:$picasso"
+    compile "com.jakewharton.picasso:picasso2-okhttp3-downloader:$okhttp3Downloader"
+}
