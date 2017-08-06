@@ -1,8 +1,7 @@
 package com.fcc.giphyshow.ui.details;
 
 import com.fcc.giphyshow.data.search.request.SearchElement;
-
-import javax.inject.Inject;
+import com.fcc.giphyshow.data.votes.VotesDAO;
 
 /**
  * Created by firta on 8/5/2017.
@@ -19,29 +18,56 @@ public class GifDetailsPresenter {
 
     private GifDetailsView view;
     private SearchElement element;
+    private VotesDAO votesDAO;
 
     private int upVotes = 0;
     private int downVotes = 0;
 
-
-    public GifDetailsPresenter(GifDetailsView view) {
+    public GifDetailsPresenter(GifDetailsView view, VotesDAO votesDAO) {
         this.view = view;
         element = (SearchElement) view.getArgs().getSerializable(ELEMENT_BUNDLE_KEY);
+        this.votesDAO = votesDAO;
         view.printLogo(element.getImages().getOriginal().getUrl());
         view.startPlayer(element.getImages().getLooping().getMp4());
+
+
+        getVotesFromBox();
+
+    }
+
+    /**
+     * method that will get the votes for the printed element
+     */
+    private void getVotesFromBox() {
+        String gifID = element.getId();
+        downVotes = votesDAO.getDownVote(gifID);
+        upVotes = votesDAO.getUpVote(gifID);
+        /*int the vote values and display them*/
+        displayVotes( upVotes, downVotes);
     }
 
     public void downVoteClicked() {
 
-        downVotes ++;
+        downVotes++;
         view.setDownVoteCount(downVotes+"");
-
+        saveVotesToDb();
     }
 
     public void upVoteClick() {
 
-        upVotes ++;
+        upVotes++;
         view.setUpVoteCount(upVotes+"");
+        saveVotesToDb();
 
+    }
+
+    private void displayVotes(int upvote, int downvote){
+        view.setDownVoteCount(upvote+"");
+        view.setUpVoteCount(downvote+"");
+    }
+
+
+    private void saveVotesToDb(){
+        votesDAO.updateVote(element.getId(), upVotes, downVotes);
     }
 }

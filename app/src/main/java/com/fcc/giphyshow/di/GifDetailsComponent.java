@@ -3,6 +3,7 @@ package com.fcc.giphyshow.di;
 import com.fcc.giphyshow.di.details.GifDetailsScope;
 import com.fcc.giphyshow.di.details.modules.GifDetailsPresenterModule;
 import com.fcc.giphyshow.di.details.modules.GifDetailsViewModule;
+import com.fcc.giphyshow.di.mainActivity.modules.VotesBoxModule;
 import com.fcc.giphyshow.ui.details.GifDetailsController;
 
 import dagger.Component;
@@ -14,7 +15,10 @@ import dagger.Component;
 
 
 @GifDetailsScope
-@Component(modules = {GifDetailsPresenterModule.class, GifDetailsViewModule.class}, dependencies = MainActivityComponent.class)
+@Component(modules = {
+        GifDetailsPresenterModule.class,
+        GifDetailsViewModule.class
+}, dependencies = MainActivityComponent.class)
 public interface GifDetailsComponent {
     void injectInController(GifDetailsController controller);
 }

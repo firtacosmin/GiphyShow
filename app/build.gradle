@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'io.objectbox'
+
+
 //apply plugin: 'com.neenbedankt.android-apt'
 
 android {
@@ -68,4 +71,6 @@ dependencies {
     //exoplayer
     compile "com.google.android.exoplayer:exoplayer-core:$exoplayer"
     compile "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
+    //notebox
+    compile "io.objectbox:objectbox-android:$objectBox"
 }
