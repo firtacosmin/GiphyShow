@@ -18,6 +18,9 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by firta on 8/6/2017.
  * The repository that will offer access to pages of {@link com.fcc.giphyshow.data.search.request.SearchResponse}
+ * It will cache a number of {@link #CACHE_MAX_SIZE} queries, each with a number of {@link #CACHE_PAGE_MAX_SIZE} pages
+ * Every page will contain {@link #ELEMENTS_PER_PAGE} elements
+ * When the number of queries is exceeded the oldest query is removed from cache
  */
 
 public class SearchRepoPage {
@@ -61,6 +64,13 @@ public class SearchRepoPage {
     private Map<String, Map<Integer,SearchResponse>> cacheMap = new ConcurrentHashMap<>();
 
 
+    /**
+     * will get the passed page position for the passed query position and will return the
+     * {@link Single} object which to observe for the {@link List} of all the retrieved pager untill now
+     * @param q the query to search for
+     * @param pagePos the position of the requested list
+     * @return the {@link Single} object to be observed for the {@link List<SearchResponse>} of pages
+     */
     public Single<List<SearchResponse>> getPage(String q, int pagePos){
         if ( haveCache(q, pagePos) ){
             return getPageFromCache(q, pagePos);

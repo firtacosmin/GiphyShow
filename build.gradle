@@ -62,5 +62,12 @@ ext{
     exoplayer = "r2.4.4"
 
     objectBox = "0.9.13"
+
+
+    mockito = "2.7.22"
+    powermockapi = "1.7.0RC2"
+    powermock = "1.7.0"
+
+
 }
 

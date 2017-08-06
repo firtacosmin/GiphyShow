@@ -32,6 +32,10 @@ android {
     }
 }
 
+objectbox {
+    generateTests true // auto-generate unit tests
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile("com.android.support.test.espresso:espresso-core:2.2.2", {
@@ -41,6 +45,16 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$appcompat"
     compile "com.android.support.constraint:constraint-layout:$constraint"
     testCompile "junit:junit:$junit"
+    testCompile "org.mockito:mockito-core:$mockito"
+//    testCompile "org.powermock:powermock-api-mockito2:$powermockapi"
+//    testCompile "org.powermock:powermock-module-junit4:$powermock"
+//    testCompile "org.powermock:powermock-core:$powermock"
+//    testCompile "org.powermock:powermock-module-junit4-rule:$powermock"
+
+
+
+
+
     //dagger
     compile "com.google.dagger:dagger:$dagger"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger"
@@ -64,7 +78,7 @@ dependencies {
     compile "com.bluelinelabs:conductor:$conductor"
     compile "com.bluelinelabs:conductor-support:$conductor"
     //pesistent search
-    compile 'com.quinny898.library.persistentsearch:library:1.1.0-SNAPSHOT'
+    compile "com.quinny898.library.persistentsearch:library:1.1.0-SNAPSHOT"
     //picasso
     compile "com.squareup.picasso:picasso:$picasso"
     compile "com.jakewharton.picasso:picasso2-okhttp3-downloader:$okhttp3Downloader"

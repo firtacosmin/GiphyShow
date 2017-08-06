@@ -1,19 +1,12 @@
 package com.fcc.giphyshow.data.search;
 
-import android.database.Observable;
-
-import com.fcc.giphyshow.data.search.request.SearchElement;
 import com.fcc.giphyshow.data.search.request.SearchResponse;
 import com.fcc.giphyshow.data.search.request.SearchService;
-import com.fcc.giphyshow.di.application.MainAppScope;
-import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
