@@ -10,9 +10,10 @@ import android.os.Bundle;
 
 public interface GifDetailsView {
 
-    void printTitle(String title);
     void printLogo(String logoURL);
     void startPlayer(String playbackURL);
+    void setUpVoteCount(String count);
+    void setDownVoteCount(String count);
     Bundle getArgs();
 
 

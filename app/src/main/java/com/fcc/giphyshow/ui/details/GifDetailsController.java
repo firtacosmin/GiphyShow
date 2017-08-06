@@ -19,10 +19,13 @@ import com.fcc.giphyshow.ui.search.SearchView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by firta on 8/5/2017.
@@ -31,14 +34,11 @@ import butterknife.ButterKnife;
  */
 
 public class GifDetailsController extends Controller implements GifDetailsView{
-    @BindView(R.id.title_txt)
-    TextView titleTxt;
-    @BindView(R.id.logo_img)
-    ImageView logoImg;
-    @BindView(R.id.playerFrame)
-    FrameLayout playerFrame;
-    @BindView(R.id.player_view)
-    SimpleExoPlayerView playerView;
+    @BindView(R.id.logo_img) ImageView logoImg;
+    @BindView(R.id.playerFrame) FrameLayout playerFrame;
+    @BindView(R.id.player_view) SimpleExoPlayerView playerView;
+    @BindView(R.id.upvote_count_txt) TextView upVoteTxt;
+    @BindView(R.id.downvote_count_txt) TextView downVoteTxt;
 
     @Inject
     Picasso picasso;
@@ -92,6 +92,18 @@ public class GifDetailsController extends Controller implements GifDetailsView{
     }
 
 
+    @OnClick(R.id.downvote_img)
+    public void onDownVoteClick(){
+        presenter.downVoteClicked();
+    }
+
+
+    @OnClick( R.id.upvote_img )
+    public void onUpVoteClick(){
+        presenter.upVoteClick();
+    }
+
+
     /**********
      *
      *
@@ -100,10 +112,6 @@ public class GifDetailsController extends Controller implements GifDetailsView{
      *
      **********************/
 
-    @Override
-    public void printTitle(String title) {
-        titleTxt.setText(title);
-    }
 
     @Override
     public void printLogo(String logoURL) {
@@ -113,5 +121,15 @@ public class GifDetailsController extends Controller implements GifDetailsView{
     @Override
     public void startPlayer(String playbackURL) {
         playerViewManager.startPlayer(playbackURL);
+    }
+
+    @Override
+    public void setUpVoteCount(String count) {
+        upVoteTxt.setText(count);
+    }
+
+    @Override
+    public void setDownVoteCount(String count) {
+        downVoteTxt.setText(count);
     }
 }

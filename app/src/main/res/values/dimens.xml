@@ -2,4 +2,6 @@
 <resources>
     <dimen name="search_view_margin">8dp</dimen>
     <dimen name="player_view_height">200dp</dimen>
+    <dimen name="vote_image_width">40dp</dimen>
+    <dimen name="gif_details_logo_width">70dp</dimen>
 </resources>

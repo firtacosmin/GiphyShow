@@ -172,12 +172,8 @@ public class SearchViewController extends Controller implements SearchView{
 
     @Override
     public void newItemCount(int itemCount) {
-//        if ( adapter.getItemCount() == itemCount ){
             adapter.setNewItemCount(itemCount);
             adapter.notifyDataSetChanged();
-//        }else {
-//            adapter.notifyItemRangeChanged(adapter.getItemCount(), itemCount);
-//        }
     }
 
     @Override

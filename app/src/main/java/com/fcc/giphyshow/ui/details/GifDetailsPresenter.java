@@ -17,14 +17,31 @@ public class GifDetailsPresenter {
      */
     public static final String ELEMENT_BUNDLE_KEY = "ELEMENT_BUNDLE_KEY";
 
-    private GifDetailsView gifDetailsController;
+    private GifDetailsView view;
     private SearchElement element;
 
+    private int upVotes = 0;
+    private int downVotes = 0;
+
+
     public GifDetailsPresenter(GifDetailsView view) {
-        this.gifDetailsController = view;
-        element = (SearchElement) gifDetailsController.getArgs().getSerializable(ELEMENT_BUNDLE_KEY);
+        this.view = view;
+        element = (SearchElement) view.getArgs().getSerializable(ELEMENT_BUNDLE_KEY);
         view.printLogo(element.getImages().getOriginal().getUrl());
         view.startPlayer(element.getImages().getLooping().getMp4());
     }
 
+    public void downVoteClicked() {
+
+        downVotes ++;
+        view.setDownVoteCount(downVotes+"");
+
+    }
+
+    public void upVoteClick() {
+
+        upVotes ++;
+        view.setUpVoteCount(upVotes+"");
+
+    }
 }
