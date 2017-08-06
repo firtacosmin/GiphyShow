@@ -11,11 +11,11 @@ import io.reactivex.annotations.NonNull;
  *
  */
 
-public class SearchResponseSingle implements SingleOnSubscribe<SearchResponse> {
+public class SearchResponseSingle<T> implements SingleOnSubscribe<T> {
 
-    private SingleEmitter<SearchResponse> emitter;
+    private SingleEmitter<T> emitter;
 
-    private SearchResponse responseToAnnounce;
+    private T responseToAnnounce;
     private Throwable errorToAnnounce;
 
     public SearchResponseSingle(){
@@ -27,7 +27,7 @@ public class SearchResponseSingle implements SingleOnSubscribe<SearchResponse> {
      * the passed {@link SearchResponse}
      * @param response
      */
-    public void announceSuccess(SearchResponse response){
+    public void announceSuccess(T response){
         if ( emitter != null ){
             emitter.onSuccess(response);
         }else{
@@ -46,7 +46,7 @@ public class SearchResponseSingle implements SingleOnSubscribe<SearchResponse> {
         emitter = null;
     }
     @Override
-    public void subscribe(@NonNull SingleEmitter<SearchResponse> e) throws Exception {
+    public void subscribe(@NonNull SingleEmitter<T> e) throws Exception {
         if ( responseToAnnounce != null ){
             e.onSuccess(responseToAnnounce);
             responseToAnnounce = null;

@@ -18,6 +18,11 @@ public class Meta  implements Serializable {
     @Expose
     private String responseId;
 
+    private long timestamp;
+    public Meta(){
+        timestamp = System.currentTimeMillis();
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -42,4 +47,7 @@ public class Meta  implements Serializable {
         this.responseId = responseId;
     }
 
+    public long getTimestamp() {
+        return timestamp;
+    }
 }

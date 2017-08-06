@@ -9,5 +9,7 @@ public interface SearchItemView {
 
     void setImage(String imageURL);
     void setDesc(String description);
+    void showLoading();
+    void hideLoading();
 
 }

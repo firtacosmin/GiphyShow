@@ -18,4 +18,8 @@ public interface SearchService {
     @GET(PlatformSettings.GIPHY_SEARCH_PATH+"?api_key="+PlatformSettings.GIPHY_APP_KEY)
     Single<SearchResponse> searchFor(@Query("q") String q, @Query("offset") int offset);
 
+
+    @GET(PlatformSettings.GIPHY_SEARCH_PATH+"?api_key="+PlatformSettings.GIPHY_APP_KEY)
+    Single<SearchResponse> searchFor(@Query("q") String q, @Query("offset") int offset, @Query("limit") int limit);
+
 }

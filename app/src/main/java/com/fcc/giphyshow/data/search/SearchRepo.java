@@ -55,7 +55,7 @@ public class SearchRepo {
     /**
      * {@link SearchResponseSingle} to return when waiting for {@link SearchService} response
      */
-    private SearchResponseSingle searchResponseSingle;
+    private SearchResponseSingle<SearchResponse> searchResponseSingle;
 
     /**
      * storing the last requested Search query to be used when returning from api
@@ -69,7 +69,7 @@ public class SearchRepo {
     }
 
     /**
-     * the method that will return an
+     * the method that will return a {@link Single} to subscribe on for the requested {@link SearchResponse}
      * @param q the query that will be passed to the server
      * @return a {@link Single<SearchResponse>} the
      */
@@ -102,7 +102,7 @@ public class SearchRepo {
                         this::receivedResponseFromApi,
                         this::receivedErrorFromApi
                 );
-        searchResponseSingle = new SearchResponseSingle();
+        searchResponseSingle = new SearchResponseSingle<>();
         return Single.create(searchResponseSingle);
     }
 
@@ -112,10 +112,11 @@ public class SearchRepo {
      * @return the {@link Single} where to subscribe to get the response
      */
     private Single<SearchResponse> getFromCache(String q) {
-        SearchResponseSingle searchResponseSingle = new SearchResponseSingle();
+        SearchResponseSingle<SearchResponse> searchResponseSingle = new SearchResponseSingle<>();
         Single<SearchResponse> singleToReturn = Single.create(searchResponseSingle);
         searchResponseSingle.announceSuccess(responseCache.get(queryCache.indexOf(q)));
         return singleToReturn;
+
     }
 
     private void receivedErrorFromApi(Throwable error) {

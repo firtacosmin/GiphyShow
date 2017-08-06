@@ -13,4 +13,5 @@ public interface SearchView {
     void showError(String message);
     void bindPresenter(SearchViewPresenter preseter);
 
+
 }

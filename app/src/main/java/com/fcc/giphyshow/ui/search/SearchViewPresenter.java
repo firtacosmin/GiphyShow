@@ -7,10 +7,13 @@ import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.fcc.giphyshow.data.search.SearchRepo;
+import com.fcc.giphyshow.data.search.SearchRepoPage;
 import com.fcc.giphyshow.data.search.request.SearchElement;
 import com.fcc.giphyshow.data.search.request.SearchResponse;
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
 import com.fcc.giphyshow.ui.Navigator;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -28,25 +31,32 @@ public class SearchViewPresenter {
 
 
     private SearchView searchView;
-    private SearchRepo repo;
+    private SearchRepoPage repo;
     private Router router;
     private Navigator navigator;
-    private SearchResponse result;
+    private List<SearchResponse> result;
+    private int itemCount;
+    String query = "";
 
     @Inject
-    public SearchViewPresenter(SearchRepo repo, Router router, Navigator navigator){
+    public SearchViewPresenter(SearchRepoPage repo, Router router, Navigator navigator) {
         this.repo = repo;
         this.router = router;
         this.navigator = navigator;
     }
 
-    public void bindView(SearchView searchView){
+    public void bindView(SearchView searchView) {
         this.searchView = searchView;
     }
 
-    public void searchPressed(String searchWord){
+    public void searchPressed(String searchWord) {
         searchView.showLoading();
-        repo.getItems(searchWord)
+        query = searchWord;
+        requestPage(0);
+    }
+
+    private void requestPage(int pageNo) {
+        repo.getPage(query, pageNo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -57,16 +67,30 @@ public class SearchViewPresenter {
 
     /**
      * callback when the items are received from the {@link SearchRepo]}
+     *
      * @param result the results
      */
-    private void gotTheItems(SearchResponse result) {
+    private void gotTheItems(List<SearchResponse> result) {
         this.result = result;
         searchView.hideLoading();
-        searchView.newItemCount(result.getPagination().getCount());
+        itemCount = result.size() * SearchRepoPage.ELEMENTS_PER_PAGE;
+        int retCount;
+        if (itemCount > result.get(0).getPagination().getTotalCount()) {
+            itemCount = result.get(0).getPagination().getTotalCount();
+            retCount = itemCount;
+        } else if ( result.size() >= SearchRepoPage.CACHE_PAGE_MAX_SIZE ) {
+            /*workaround to limit the page number*/
+            retCount = itemCount;
+        }else{
+            /*if there are more elements on the server then add one to the size to print the loading last item*/
+            retCount = itemCount + 1;
+        }
+        searchView.newItemCount(retCount);
     }
 
     /**
      * callback when the response retrieved from {@link SearchRepo} is with error
+     *
      * @param error the {@link Throwable} error
      */
     private void errorOnGettingItems(Throwable error) {
@@ -77,25 +101,44 @@ public class SearchViewPresenter {
     /**
      * method called from {@link android.support.v7.widget.RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder, int)}
      * It is used by the {@link SearchViewPresenter} to update the view information
-     * @param view the {@link SearchItemView} to be updated
+     *
+     * @param view     the {@link SearchItemView} to be updated
      * @param position the position the view is on
      */
     public void onBindViewHolder(SearchItemView view, int position) {
-        if ( result != null && result.getPagination().getCount() > 0 ){
-            SearchElement el = result.getData().get(position);
-            view.setDesc(el.getSlug());
-            view.setImage(el.getImages().getOriginal().getUrl());
+        if (result != null && itemCount > 0) {
+            if (position >= itemCount) {
+                /*on the last position so print loading*/
+                view.showLoading();
+                /*request new page*/
+                if ( result.size() < SearchRepoPage.CACHE_PAGE_MAX_SIZE ) {
+                    requestPage(result.size());
+                }
+            } else {
+                SearchElement el = getElementForPosition(position);
+                view.hideLoading();
+                view.setDesc(el.getSlug());
+                view.setImage(el.getImages().getOriginal().getUrl());
+            }
         }
+    }
+
+    private SearchElement getElementForPosition(int position) {
+        int pageNo = position / SearchRepoPage.ELEMENTS_PER_PAGE;
+        int posInPage = position % SearchRepoPage.ELEMENTS_PER_PAGE;
+
+        return result.get(pageNo).getData().get(posInPage);
     }
 
     /**
      * callback when an item of the list is clicked
-     * @param adapterPosition the position of the clicked item
+     *
+     * @param clickPosition the position of the clicked item
      */
-    public void itemClicked(int adapterPosition) {
-        if ( result != null && result.getPagination().getCount() > 0 ) {
+    public void itemClicked(int clickPosition) {
+        if (result != null && itemCount > 0 && clickPosition < itemCount) {
 
-            SearchElement element = result.getData().get(adapterPosition);
+            SearchElement element = getElementForPosition(clickPosition);
             Bundle dataToPass = new Bundle();
             dataToPass.putSerializable(ELEMENT_BUNDLE_KEY, element);
             navigator.navigateToDetails(dataToPass);
