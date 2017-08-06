@@ -28,7 +28,7 @@ public class Navigator {
 
     public void navigateToLandingPage(){
         if (!router.hasRootController()) {
-            router.setRoot(RouterTransaction.with( new SearchViewController()));
+            router.setRoot(RouterTransaction.with( new SearchViewController()).tag(SearchViewController.TAG));
         }
     }
 

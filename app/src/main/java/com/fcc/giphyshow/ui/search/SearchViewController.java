@@ -1,6 +1,7 @@
 package com.fcc.giphyshow.ui.search;
 
 import android.content.Intent;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +35,9 @@ import butterknife.ButterKnife;
  */
 //@MainActivityScope
 public class SearchViewController extends Controller implements SearchView{
+
+    public static final String TAG = "SearchViewController";
+
 
     @BindView(R.id.list)
     RecyclerView theSearchList;
@@ -129,11 +133,13 @@ public class SearchViewController extends Controller implements SearchView{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        if (isAdded() && requestCode == SearchBox.VOICE_RECOGNITION_CODE && resultCode == getActivity().RESULT_OK) {
-//            ArrayList<String> matches = data
-//                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-//            search.populateEditText(matches);
-//        }
+        if (isAttached() && requestCode == SearchBox.VOICE_RECOGNITION_CODE && resultCode == getActivity().RESULT_OK && data != null) {
+            ArrayList<String> matches = data
+                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if ( matches.size() > 0 ) {
+                theSearchBox.populateEditText(matches.get(0));
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
 
     }

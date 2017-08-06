@@ -1,10 +1,12 @@
 package com.fcc.giphyshow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 
 import com.bluelinelabs.conductor.Conductor;
+import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.fcc.giphyshow.di.DaggerMainActivityComponent;
@@ -62,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
         navigator.navigateToLandingPage();
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //Not proud of it but no fast solution :)
+        Controller controllerToAnnounce = router.getControllerWithTag(SearchViewController.TAG);
+        if ( controllerToAnnounce != null && controllerToAnnounce.isAttached() ) {
+            controllerToAnnounce.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
