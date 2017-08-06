@@ -71,6 +71,8 @@ public class SearchViewController extends Controller implements SearchView{
 
 
         ((MainActivity)getActivity()).getDiComponent().injectSearchViewController(this);
+        /*will hold the view when detached */
+        setRetainViewMode(RetainViewMode.RETAIN_DETACH);
         presenter.bindView(this);
 
 

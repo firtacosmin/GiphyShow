@@ -12,11 +12,10 @@ import android.widget.TextView;
 import com.bluelinelabs.conductor.Controller;
 import com.fcc.giphyshow.MainActivity;
 import com.fcc.giphyshow.R;
-import com.fcc.giphyshow.data.search.request.SearchElement;
 import com.fcc.giphyshow.di.DaggerGifDetailsComponent;
 import com.fcc.giphyshow.di.GifDetailsComponent;
 import com.fcc.giphyshow.di.details.modules.GifDetailsViewModule;
-import com.fcc.giphyshow.utils.BundleBuilder;
+import com.fcc.giphyshow.ui.search.SearchView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +47,7 @@ public class GifDetailsController extends Controller implements GifDetailsView{
     GifDetailsPresenter presenter;
 
 
-    PlayerManager playerManager;
+    PlayerViewManager playerViewManager;
 
 
     private String playerURL = "";
@@ -64,7 +63,7 @@ public class GifDetailsController extends Controller implements GifDetailsView{
         View view = inflater.inflate(R.layout.controller_view_details, container, false);
         ButterKnife.bind(this, view);
 
-        playerManager = new PlayerManager(playerView);
+        playerViewManager = new PlayerViewManager(playerView);
 
         GifDetailsComponent diComponent = DaggerGifDetailsComponent
                 .builder()
@@ -73,6 +72,9 @@ public class GifDetailsController extends Controller implements GifDetailsView{
                 .build();
         diComponent.injectInController(this);
 
+        /*will hold the view when detached */
+        setRetainViewMode(RetainViewMode.RETAIN_DETACH);
+
 
         return view;
     }
@@ -80,17 +82,23 @@ public class GifDetailsController extends Controller implements GifDetailsView{
     @Override
     protected void onAttach(@NonNull View view) {
         super.onAttach(view);
-        if ( !playerURL.isEmpty() ){
-            playerManager.startPlayer(playerURL);
-            playerURL = "";
-        }
+        playerViewManager.parentAttached();
     }
 
     @Override
     protected void onDetach(@NonNull View view) {
         super.onDetach(view);
-        playerManager.parentViewDetached();
+        playerViewManager.parentViewDetached();
     }
+
+
+    /**********
+     *
+     *
+     * Implementation from {@link GifDetailsView}
+     *
+     *
+     **********************/
 
     @Override
     public void printTitle(String title) {
@@ -104,11 +112,6 @@ public class GifDetailsController extends Controller implements GifDetailsView{
 
     @Override
     public void startPlayer(String playbackURL) {
-        if ( isAttached() ) {
-            playerURL = "";
-            playerManager.startPlayer(playbackURL);
-        }else{
-            playerURL = playbackURL;
-        }
+        playerViewManager.startPlayer(playbackURL);
     }
 }
