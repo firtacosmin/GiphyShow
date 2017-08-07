@@ -118,7 +118,7 @@ public class SearchViewPresenter {
                 SearchElement el = getElementForPosition(position);
                 view.hideLoading();
                 view.setDesc(el.getSlug());
-                view.setImage(el.getImages().getOriginal().getUrl());
+                view.setImage(el.getImages().getFixedHeightStill().getUrl());
             }
         }
     }

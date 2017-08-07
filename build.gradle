@@ -57,6 +57,7 @@ ext{
     conductor = "2.1.4"
 
     picasso = "2.5.0"
+    glideVersion = "3.7.0"
     okhttp3Downloader = "1.0.2"
 
     exoplayer = "r2.4.4"
@@ -67,6 +68,8 @@ ext{
     mockito = "2.7.22"
     powermockapi = "1.7.0RC2"
     powermock = "1.7.0"
+
+
 
 
 }

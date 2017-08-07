@@ -87,4 +87,7 @@ dependencies {
     compile "com.google.android.exoplayer:exoplayer-ui:$exoplayer"
     //notebox
     compile "io.objectbox:objectbox-android:$objectBox"
+    compile "com.github.bumptech.glide:glide:$glideVersion"
+
+
 }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fcc.giphyshow.R;
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
 import com.squareup.picasso.Picasso;
@@ -83,6 +84,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Se
         @Override
         public void setImage(String imageURL) {
             picasso.load(imageURL).into(item_gif_thumb);
+//            Glide.with(item_gif_thumb.getContext()).load(imageURL).into(item_gif_thumb);
         }
 
         @Override
