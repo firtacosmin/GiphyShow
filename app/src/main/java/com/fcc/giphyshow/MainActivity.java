@@ -15,6 +15,7 @@ import com.fcc.giphyshow.di.mainActivity.modules.RouterModule;
 import com.fcc.giphyshow.ui.Navigator;
 import com.fcc.giphyshow.ui.search.SearchListAdapter;
 import com.fcc.giphyshow.ui.search.SearchViewController;
+import com.fcc.giphyshow.utils.ExceptionHandler;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
