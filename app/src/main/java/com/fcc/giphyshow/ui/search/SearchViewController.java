@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -85,7 +86,7 @@ public class SearchViewController extends Controller implements SearchView{
         ButterKnife.bind(this, view);
 
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new GridLayoutManager(getActivity(), 3);
         theSearchList.setLayoutManager(mLayoutManager);
         theSearchList.setAdapter(adapter);
 

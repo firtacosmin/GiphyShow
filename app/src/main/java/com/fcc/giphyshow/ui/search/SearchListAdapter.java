@@ -67,8 +67,8 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Se
      */
     class SearchListItemHolder extends RecyclerView.ViewHolder implements SearchItemView{
 
-        @BindView(R.id.item_desc)
-        TextView item_desc;
+//        @BindView(R.id.item_desc)
+//        TextView item_desc;
         @BindView(R.id.item_gif_thumb)
         ImageView item_gif_thumb;
         @BindView(R.id.loading)
@@ -89,14 +89,14 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Se
 
         @Override
         public void setDesc(String description) {
-            item_desc.setText(description);
+//            item_desc.setText(description);
         }
 
         @Override
         public void showLoading() {
             loading.setVisibility(View.VISIBLE);
             item_gif_thumb.setVisibility(View.INVISIBLE);
-            item_desc.setVisibility(View.INVISIBLE);
+//            item_desc.setVisibility(View.INVISIBLE);
         }
 
         @Override
@@ -104,7 +104,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Se
 
             loading.setVisibility(View.INVISIBLE);
             item_gif_thumb.setVisibility(View.VISIBLE);
-            item_desc.setVisibility(View.VISIBLE);
+//            item_desc.setVisibility(View.VISIBLE);
         }
     }
 
