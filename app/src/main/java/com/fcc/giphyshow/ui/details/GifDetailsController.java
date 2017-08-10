@@ -15,17 +15,15 @@ import com.fcc.giphyshow.R;
 import com.fcc.giphyshow.di.DaggerGifDetailsComponent;
 import com.fcc.giphyshow.di.GifDetailsComponent;
 import com.fcc.giphyshow.di.details.modules.GifDetailsViewModule;
-import com.fcc.giphyshow.ui.search.SearchView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import io.reactivex.Observable;
 
 /**
  * Created by firta on 8/5/2017.
@@ -39,6 +37,9 @@ public class GifDetailsController extends Controller implements GifDetailsView{
     @BindView(R.id.player_view) SimpleExoPlayerView playerView;
     @BindView(R.id.upvote_count_txt) TextView upVoteTxt;
     @BindView(R.id.downvote_count_txt) TextView downVoteTxt;
+
+    @BindView(R.id.upvote_img) ImageView imgUpVote;
+    @BindView(R.id.downvote_img) ImageView imgDownVote;
 
     @Inject
     Picasso picasso;
@@ -75,8 +76,15 @@ public class GifDetailsController extends Controller implements GifDetailsView{
         /*will hold the view when detached */
         setRetainViewMode(RetainViewMode.RETAIN_DETACH);
 
-
+        presenter.onCreateView();
         return view;
+    }
+
+
+    @Override
+    protected void onDestroyView(@NonNull View view) {
+        super.onDestroyView(view);
+        presenter.onDestroyView();
     }
 
     @Override
@@ -92,16 +100,16 @@ public class GifDetailsController extends Controller implements GifDetailsView{
     }
 
 
-    @OnClick(R.id.downvote_img)
-    public void onDownVoteClick(){
-        presenter.downVoteClicked();
-    }
-
-
-    @OnClick( R.id.upvote_img )
-    public void onUpVoteClick(){
-        presenter.upVoteClick();
-    }
+//    @OnClick(R.id.downvote_img)
+//    public void onDownVoteClick(){
+//        presenter.downVoteClicked();
+//    }
+//
+//
+//    @OnClick( R.id.upvote_img )
+//    public void onUpVoteClick(){
+//        presenter.upVoteClick();
+//    }
 
 
     /**********
@@ -131,5 +139,15 @@ public class GifDetailsController extends Controller implements GifDetailsView{
     @Override
     public void setDownVoteCount(String count) {
         downVoteTxt.setText(count);
+    }
+
+    @Override
+    public Observable<Object> observeUpVoteBtn() {
+        return RxView.clicks(imgUpVote);
+    }
+
+    @Override
+    public Observable<Object> observeDownVoteBtn() {
+        return RxView.clicks(imgDownVote);
     }
 }
