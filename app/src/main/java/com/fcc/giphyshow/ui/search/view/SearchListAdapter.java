@@ -1,4 +1,4 @@
-package com.fcc.giphyshow.ui.search;
+package com.fcc.giphyshow.ui.search.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,18 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.fcc.giphyshow.R;
-import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
+import com.fcc.giphyshow.ui.search.SearchViewPresenter;
 import com.squareup.picasso.Picasso;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.Module;
 
 /**
  * Created by firta on 8/5/2017.

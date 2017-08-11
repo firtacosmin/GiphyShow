@@ -1,4 +1,4 @@
-package com.fcc.giphyshow.ui.search;
+package com.fcc.giphyshow.ui.search.view;
 
 /**
  * Created by firta on 8/5/2017.

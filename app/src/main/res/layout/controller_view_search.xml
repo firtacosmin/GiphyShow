@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+
+        <variable
+            name="state"
+            type="com.fcc.giphyshow.ui.search.view.SearchViewState"
+            />
+
+    </data>
+
+<RelativeLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.quinny898.library.persistentsearch.SearchBox
-        android:id="@+id/searchbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="@dimen/search_view_margin"
-        android:layout_marginRight="@dimen/search_view_margin" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
@@ -21,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/search_view_margin"
         android:layout_marginRight="@dimen/search_view_margin"
-        android:layout_below="@+id/searchbox"/>
+        android:visibility="@{state.getListVisibility()}"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -29,12 +32,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="invisible"/>
+        android:visibility="@{state.getLoadingVisibility()}"/>
 
     <TextView
         android:id="@+id/error_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:visibility="invisible"/>
+        android:layout_centerInParent="true"
+        android:text="@{state.getErrorMessage()}"
+        android:visibility="@{state.getErrorVisibility()}"/>
 </RelativeLayout>
+</layout>

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">GiphyShow</string>
+    <string name="no_elements_error">The search returned with no elements.</string>
+    <string name="wellcome_message">Welcome! You can search for gifs here ;)</string>
+    <string name="search_text_title">Giphy Show</string>
+    <string name="gif_preview">gif preview</string>
+    <string name="desc_logo_img">The logo image in the details view</string>
+    <string name="desc_upvote_img">upvote image in the details view</string>
+    <string name="desc_downvote_img">downvote image description in the details view</string>
+    <string name="_0">0</string>
 </resources>

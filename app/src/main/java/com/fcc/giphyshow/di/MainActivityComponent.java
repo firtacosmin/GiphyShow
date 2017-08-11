@@ -7,13 +7,11 @@ import com.fcc.giphyshow.di.mainActivity.modules.RouterModule;
 import com.fcc.giphyshow.di.mainActivity.modules.SearchListAdapterModule;
 import com.fcc.giphyshow.di.mainActivity.modules.SearchListControllerModule;
 import com.fcc.giphyshow.di.mainActivity.modules.VotesBoxModule;
-import com.fcc.giphyshow.ui.details.GifDetailsController;
-import com.fcc.giphyshow.ui.search.SearchViewController;
+import com.fcc.giphyshow.ui.search.view.SearchViewController;
 import com.squareup.picasso.Picasso;
 
 import dagger.Component;
 import io.objectbox.Box;
-import io.objectbox.BoxStore;
 
 /**
  * Created by firta on 8/5/2017.

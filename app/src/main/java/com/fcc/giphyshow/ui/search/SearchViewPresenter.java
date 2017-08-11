@@ -4,14 +4,16 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
 import com.bluelinelabs.conductor.Router;
-import com.bluelinelabs.conductor.RouterTransaction;
-import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
+import com.fcc.giphyshow.R;
 import com.fcc.giphyshow.data.search.SearchRepo;
 import com.fcc.giphyshow.data.search.SearchRepoPage;
 import com.fcc.giphyshow.data.search.request.SearchElement;
 import com.fcc.giphyshow.data.search.request.SearchResponse;
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
 import com.fcc.giphyshow.ui.Navigator;
+import com.fcc.giphyshow.ui.search.view.ISearchView;
+import com.fcc.giphyshow.ui.search.view.SearchItemView;
+import com.fcc.giphyshow.ui.search.view.SearchViewController;
 
 import java.util.List;
 
@@ -30,13 +32,12 @@ import static com.fcc.giphyshow.ui.details.GifDetailsPresenter.ELEMENT_BUNDLE_KE
 public class SearchViewPresenter {
 
 
-    private SearchView searchView;
+    private ISearchView searchView;
     private SearchRepoPage repo;
     private Router router;
     private Navigator navigator;
     private List<SearchResponse> result;
     private int itemCount;
-    String query = "";
 
     @Inject
     public SearchViewPresenter(SearchRepoPage repo, Router router, Navigator navigator) {
@@ -45,18 +46,28 @@ public class SearchViewPresenter {
         this.navigator = navigator;
     }
 
-    public void bindView(SearchView searchView) {
+    public void bindView(ISearchView searchView) {
         this.searchView = searchView;
+        searchView.searchEvent()
+                .doOnNext(__ -> searchView.showLoading())
+                .map(__ -> searchView.getQueryTest())
+                .observeOn(Schedulers.io())
+                .switchMap( query -> repo.getPage(query, 0))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        this::gotTheItems,
+                        this::errorOnGettingItems
+                );
     }
 
     public void searchPressed(String searchWord) {
         searchView.showLoading();
-        query = searchWord;
         requestPage(0);
     }
 
+
     private void requestPage(int pageNo) {
-        repo.getPage(query, pageNo)
+        repo.getPage(searchView.getQueryTest(), pageNo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -74,18 +85,22 @@ public class SearchViewPresenter {
         this.result = result;
         searchView.hideLoading();
         itemCount = result.size() * SearchRepoPage.ELEMENTS_PER_PAGE;
-        int retCount;
+        int retCount = 0;
         if (itemCount > result.get(0).getPagination().getTotalCount()) {
             itemCount = result.get(0).getPagination().getTotalCount();
             retCount = itemCount;
         } else if ( result.size() >= SearchRepoPage.CACHE_PAGE_MAX_SIZE ) {
             /*workaround to limit the page number*/
             retCount = itemCount;
-        }else{
+        }else if ( itemCount > 0){
             /*if there are more elements on the server then add one to the size to print the loading last item*/
             retCount = itemCount + 1;
         }
-        searchView.newItemCount(retCount);
+        if ( itemCount > 0 ) {
+            searchView.newItemCount(retCount);
+        }else{
+            searchView.showError(R.string.no_elements_error);
+        }
     }
 
     /**

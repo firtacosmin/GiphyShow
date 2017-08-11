@@ -6,7 +6,7 @@ import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.fcc.giphyshow.ui.details.GifDetailsController;
-import com.fcc.giphyshow.ui.search.SearchViewController;
+import com.fcc.giphyshow.ui.search.view.SearchViewController;
 
 import javax.inject.Inject;
 

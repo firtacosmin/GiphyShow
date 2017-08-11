@@ -1,7 +1,7 @@
 package com.fcc.giphyshow.di.mainActivity.modules;
 
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
-import com.fcc.giphyshow.ui.search.SearchListAdapter;
+import com.fcc.giphyshow.ui.search.view.SearchListAdapter;
 import com.fcc.giphyshow.ui.search.SearchViewPresenter;
 import com.squareup.picasso.Picasso;
 

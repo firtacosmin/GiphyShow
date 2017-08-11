@@ -1,5 +1,6 @@
 package com.fcc.giphyshow.data.search;
 
+
 import com.fcc.giphyshow.data.search.request.SearchResponse;
 import com.fcc.giphyshow.data.search.request.SearchService;
 
@@ -11,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -71,7 +73,7 @@ public class SearchRepoPage {
      * @param pagePos the position of the requested list
      * @return the {@link Single} object to be observed for the {@link List<SearchResponse>} of pages
      */
-    public Single<List<SearchResponse>> getPage(String q, int pagePos){
+    public Observable<List<SearchResponse>> getPage(String q, int pagePos){
         if ( haveCache(q, pagePos) ){
             return getPageFromCache(q, pagePos);
         }else{
@@ -79,7 +81,7 @@ public class SearchRepoPage {
         }
     }
 
-    private Single<List<SearchResponse>> getPageFromApi(String q, int pagePos) {
+    private Observable<List<SearchResponse>> getPageFromApi(String q, int pagePos) {
         disposeFromAPI();
         disposableFromLastSearch = api.searchFor(q, pagePos*ELEMENTS_PER_PAGE, ELEMENTS_PER_PAGE)
                 .subscribeOn(Schedulers.io())
@@ -89,7 +91,7 @@ public class SearchRepoPage {
                         this::retrievedErrorFromApi
                 );
         searchResponseSingle = new SearchResponseSingle<>();
-        return Single.create(searchResponseSingle);
+        return Single.create(searchResponseSingle).toObservable();
     }
 
     private void retrievedErrorFromApi(Throwable error) {
@@ -182,7 +184,7 @@ public class SearchRepoPage {
         return oldestKey;
     }
 
-    private Single<List<SearchResponse>> getPageFromCache(String q, int pagePos) {
+    private io.reactivex.Observable<List<SearchResponse>> getPageFromCache(String q, int pagePos) {
 
         ArrayList<SearchResponse> listToReturn = new ArrayList<>();
         listToReturn.addAll(cacheMap.get(q).values());
@@ -190,7 +192,7 @@ public class SearchRepoPage {
         SearchResponseSingle<List<SearchResponse>> searchResponseSingle = new SearchResponseSingle<>();
         Single<List<SearchResponse>> singleToReturn = Single.create(searchResponseSingle);
         searchResponseSingle.announceSuccess(listToReturn);
-        return singleToReturn;
+        return singleToReturn.toObservable();
     }
 
     private boolean haveCache(String q, int pagePos) {

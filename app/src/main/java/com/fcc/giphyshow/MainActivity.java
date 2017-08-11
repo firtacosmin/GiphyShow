@@ -8,15 +8,12 @@ import android.view.ViewGroup;
 import com.bluelinelabs.conductor.Conductor;
 import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.Router;
-import com.bluelinelabs.conductor.RouterTransaction;
 import com.fcc.giphyshow.di.DaggerMainActivityComponent;
 import com.fcc.giphyshow.di.MainActivityComponent;
 import com.fcc.giphyshow.di.mainActivity.modules.RouterModule;
 import com.fcc.giphyshow.ui.Navigator;
-import com.fcc.giphyshow.ui.search.SearchListAdapter;
-import com.fcc.giphyshow.ui.search.SearchViewController;
+import com.fcc.giphyshow.ui.search.view.SearchViewController;
 import com.fcc.giphyshow.utils.ExceptionHandler;
-import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
@@ -68,15 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //Not proud of it but no fast solution :)
-        Controller controllerToAnnounce = router.getControllerWithTag(SearchViewController.TAG);
-        if ( controllerToAnnounce != null && controllerToAnnounce.isAttached() ) {
-            controllerToAnnounce.onActivityResult(requestCode, resultCode, data);
-        }
-    }
+
 
     @Override
     public void onBackPressed() {

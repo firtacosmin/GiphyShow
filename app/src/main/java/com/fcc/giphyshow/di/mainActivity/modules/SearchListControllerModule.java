@@ -1,7 +1,7 @@
 package com.fcc.giphyshow.di.mainActivity.modules;
 
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
-import com.fcc.giphyshow.ui.search.SearchViewController;
+import com.fcc.giphyshow.ui.search.view.SearchViewController;
 
 import dagger.Module;
 import dagger.Provides;
