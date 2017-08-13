@@ -1,7 +1,9 @@
 package com.fcc.giphyshow.di;
 
+import android.content.Context;
+
 import com.fcc.giphyshow.MainActivity;
-import com.fcc.giphyshow.data.votes.Votes;
+import com.fcc.giphyshow.ui.details.model.Votes;
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
 import com.fcc.giphyshow.di.mainActivity.modules.RouterModule;
 import com.fcc.giphyshow.di.mainActivity.modules.SearchListAdapterModule;
@@ -27,6 +29,7 @@ import io.objectbox.Box;
 public interface MainActivityComponent {
     Picasso getPicasso();
     Box<Votes> getVotesBox();
+    Context getContext();
     void injectMainActivity(MainActivity activity);
     void injectSearchViewController(SearchViewController searchViewController);
 

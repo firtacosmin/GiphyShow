@@ -11,14 +11,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 
-import com.fcc.giphyshow.data.search.request.Images;
-import com.fcc.giphyshow.data.search.request.Looping;
-import com.fcc.giphyshow.data.search.request.Original;
-import com.fcc.giphyshow.data.search.request.SearchElement;
-import com.fcc.giphyshow.data.votes.VotesDAO;
+import com.fcc.giphyshow.ui.details.model.VotesDAO;
+import com.fcc.giphyshow.ui.details.view.GifDetailsView;
+import com.fcc.giphyshow.ui.search.model.request.Images;
+import com.fcc.giphyshow.ui.search.model.request.Looping;
+import com.fcc.giphyshow.ui.search.model.request.Original;
+import com.fcc.giphyshow.ui.search.model.request.SearchElement;
 
 import static com.fcc.giphyshow.ui.details.GifDetailsPresenter.ELEMENT_BUNDLE_KEY;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 /**

@@ -12,4 +12,6 @@ public interface SearchItemView {
     void showLoading();
     void hideLoading();
 
+    int getAdapterPosition();
+
 }

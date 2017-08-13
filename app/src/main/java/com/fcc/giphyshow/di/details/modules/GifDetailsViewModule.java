@@ -1,14 +1,14 @@
 package com.fcc.giphyshow.di.details.modules;
 
 import com.fcc.giphyshow.di.details.GifDetailsScope;
-import com.fcc.giphyshow.ui.details.GifDetailsView;
+import com.fcc.giphyshow.ui.details.view.GifDetailsView;
 
 import dagger.Module;
 import dagger.Provides;
 
 /**
  * Created by firta on 8/6/2017.
- * The module that will inject the {@link com.fcc.giphyshow.ui.details.GifDetailsView} instance
+ * The module that will inject the {@link GifDetailsView} instance
  */
 
 @Module

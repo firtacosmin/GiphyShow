@@ -18,6 +18,6 @@ public class SearchListAdapterModule {
     @Provides
     @MainActivityScope
     public SearchListAdapter provideSearchListAdapter(Picasso picasso, SearchViewPresenter presenter){
-        return new SearchListAdapter(picasso, presenter);
+        return new SearchListAdapter(picasso);
     }
 }

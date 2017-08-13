@@ -5,12 +5,12 @@ import android.support.v7.widget.RecyclerView;
 
 import com.bluelinelabs.conductor.Router;
 import com.fcc.giphyshow.R;
-import com.fcc.giphyshow.data.search.SearchRepo;
-import com.fcc.giphyshow.data.search.SearchRepoPage;
-import com.fcc.giphyshow.data.search.request.SearchElement;
-import com.fcc.giphyshow.data.search.request.SearchResponse;
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
 import com.fcc.giphyshow.ui.Navigator;
+import com.fcc.giphyshow.ui.search.model.SearchRepo;
+import com.fcc.giphyshow.ui.search.model.SearchRepoPage;
+import com.fcc.giphyshow.ui.search.model.request.SearchElement;
+import com.fcc.giphyshow.ui.search.model.request.SearchResponse;
 import com.fcc.giphyshow.ui.search.view.ISearchView;
 import com.fcc.giphyshow.ui.search.view.SearchItemView;
 import com.fcc.giphyshow.ui.search.view.SearchViewController;
@@ -20,6 +20,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.fcc.giphyshow.ui.details.GifDetailsPresenter.ELEMENT_BUNDLE_KEY;
@@ -39,16 +40,21 @@ public class SearchViewPresenter {
     private List<SearchResponse> result;
     private int itemCount;
 
+    private CompositeDisposable subscriptions = new CompositeDisposable();
+
     @Inject
-    public SearchViewPresenter(SearchRepoPage repo, Router router, Navigator navigator) {
+    public SearchViewPresenter(SearchRepoPage repo, Router router, Navigator navigator, ISearchView view) {
         this.repo = repo;
         this.router = router;
         this.navigator = navigator;
+        searchView = view;
+        subscriptions.add(searchView.getControllerStateEvent()
+                .subscribe(this::viewEventOccured));
+
     }
 
     public void bindView(ISearchView searchView) {
-        this.searchView = searchView;
-        searchView.searchEvent()
+        subscriptions.add(searchView.searchEvent()
                 .doOnNext(__ -> searchView.showLoading())
                 .map(__ -> searchView.getQueryTest())
                 .observeOn(Schedulers.io())
@@ -57,12 +63,22 @@ public class SearchViewPresenter {
                 .subscribe(
                         this::gotTheItems,
                         this::errorOnGettingItems
-                );
+                )
+        );
+
+        subscriptions.add(searchView.getBindViewHolderObservable()
+                .subscribe(this::onBindViewHolder));
+        subscriptions.add(searchView.getItemClickObservable()
+                .subscribe(this::itemClicked));
+
     }
 
-    public void searchPressed(String searchWord) {
-        searchView.showLoading();
-        requestPage(0);
+    private void viewEventOccured(String event) {
+        if ( event.equals(ISearchView.CREATED) ){
+            bindView(searchView);
+        }else{
+            subscriptions.dispose();
+        }
     }
 
 
@@ -109,7 +125,7 @@ public class SearchViewPresenter {
      * @param error the {@link Throwable} error
      */
     private void errorOnGettingItems(Throwable error) {
-
+        searchView.showError(R.string.error_getting_items);
     }
 
 
@@ -118,10 +134,10 @@ public class SearchViewPresenter {
      * It is used by the {@link SearchViewPresenter} to update the view information
      *
      * @param view     the {@link SearchItemView} to be updated
-     * @param position the position the view is on
      */
-    public void onBindViewHolder(SearchItemView view, int position) {
+    public void onBindViewHolder(SearchItemView view) {
         if (result != null && itemCount > 0) {
+            int position = view.getAdapterPosition();
             if (position >= itemCount) {
                 /*on the last position so print loading*/
                 view.showLoading();

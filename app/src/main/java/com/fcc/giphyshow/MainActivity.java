@@ -11,6 +11,7 @@ import com.bluelinelabs.conductor.Router;
 import com.fcc.giphyshow.di.DaggerMainActivityComponent;
 import com.fcc.giphyshow.di.MainActivityComponent;
 import com.fcc.giphyshow.di.mainActivity.modules.RouterModule;
+import com.fcc.giphyshow.di.mainActivity.modules.SearchListControllerModule;
 import com.fcc.giphyshow.ui.Navigator;
 import com.fcc.giphyshow.ui.search.view.SearchViewController;
 import com.fcc.giphyshow.utils.ExceptionHandler;
@@ -20,7 +21,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//import com.fcc.giphyshow.di.mainActivity.DaggerMainActivityComponent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,11 +30,6 @@ public class MainActivity extends AppCompatActivity {
     ViewGroup container;
 
 
-//    @Inject
-//    Picasso picasso;
-
-//    @Inject
-//    SearchListAdapter adapter;
 
     @Inject
     Navigator navigator;
@@ -45,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
@@ -55,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         diComponent = DaggerMainActivityComponent
                 .builder()
                 .mainAppComponent(((MainApp)getApplication()).getDiComponent())
+                .searchListControllerModule(new SearchListControllerModule())
                 .routerModule(new RouterModule(router))
                 .build();
         diComponent.injectMainActivity(this);

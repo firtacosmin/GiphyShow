@@ -11,15 +11,22 @@ import io.reactivex.Observable;
 
 public interface ISearchView {
 
+    String CREATED = "CREATED";
+    String DESTROYED = "DESTROYED";
+
     void showLoading();
     void hideLoading();
     void newItemCount(int itemCount);
     void showError(int messageID);
-    void bindPresenter(SearchViewPresenter preseter);
 
     Observable<String> searchEvent();
 
     String getQueryTest();
 
 
+    Observable<SearchItemView> getBindViewHolderObservable();
+
+    Observable<Integer> getItemClickObservable();
+
+    Observable<String> getControllerStateEvent();
 }

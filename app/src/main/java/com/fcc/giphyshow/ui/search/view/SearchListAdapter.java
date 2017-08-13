@@ -9,10 +9,13 @@ import android.widget.ProgressBar;
 
 import com.fcc.giphyshow.R;
 import com.fcc.giphyshow.ui.search.SearchViewPresenter;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 /**
  * Created by firta on 8/5/2017.
@@ -21,18 +24,30 @@ import butterknife.ButterKnife;
 public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.SearchListItemHolder>{
 
     private final Picasso picasso;
-    private final SearchViewPresenter presenter;
     private int itemCount = 0;
 
-    public SearchListAdapter(Picasso picasso, SearchViewPresenter presenter){
+    private PublishSubject<SearchItemView> bindViewHolderEvent = PublishSubject.create();
+    private PublishSubject<Integer> itemClickedEvent = PublishSubject.create();
+
+
+
+    public SearchListAdapter(Picasso picasso){
 
         this.picasso = picasso;
-        this.presenter = presenter;
     }
 
     public void setNewItemCount(int newItemCount){
         itemCount = newItemCount;
     }
+
+    public Observable<SearchItemView> getBindViewHolderObservable(){
+        return bindViewHolderEvent;
+    }
+
+    public Observable<Integer> getItemClickObservable(){
+        return itemClickedEvent;
+    }
+
 
     @Override
     public SearchListItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -44,10 +59,8 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Se
 
     @Override
     public void onBindViewHolder(SearchListItemHolder holder, int position) {
-        presenter.onBindViewHolder(holder, position);
-        holder.itemView.setOnClickListener(view ->{
-            presenter.itemClicked(holder.getAdapterPosition());
-        });
+        bindViewHolderEvent.onNext(holder);
+        RxView.clicks( holder.itemView).subscribe( __ -> itemClickedEvent.onNext(position));
     }
 
     @Override

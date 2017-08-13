@@ -21,7 +21,6 @@ import java.util.Date;
 public class ExceptionHandler implements
 	Thread.UncaughtExceptionHandler {
 
-	private final Activity myContext;
 
 
 	private final String LINE_SEPARATOR = System.getProperty("line.separator");
@@ -39,14 +38,11 @@ public class ExceptionHandler implements
 	private static int numerOfCrashes = 0 ;
 	
 	public ExceptionHandler(Activity context, int noOfCrashes) {
-		myContext = context;
 		numerOfCrashes = noOfCrashes;
 		Log.d(TAG, "number of crashes: " + numerOfCrashes);
 	}
 
-	public ExceptionHandler(MainActivity activity) {
-		myContext = activity;
-
+	public ExceptionHandler() {
 
 	}
 
@@ -107,7 +103,7 @@ public class ExceptionHandler implements
 
 			String currentDateandTime = sdf.format(new Date());
 
-			String dir = Environment.getExternalStorageDirectory() + "/duView";
+			String dir = Environment.getExternalStorageDirectory() + "/giphyShow";
 			createDirIfNotExists(dir);
 
 			String fileName = dir + "/log.txt";
@@ -119,7 +115,8 @@ public class ExceptionHandler implements
 			osw.write("\n" + currentDateandTime + " ");
 			osw.write(sout);
 			osw.flush();
-			osw.close();fOut.close();
+			osw.close();
+			fOut.close();
 		}
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

@@ -1,6 +1,6 @@
 package com.fcc.giphyshow.di.application.modules;
 
-import com.fcc.giphyshow.data.search.request.SearchService;
+import com.fcc.giphyshow.ui.search.model.request.SearchService;
 import com.fcc.giphyshow.di.application.ForGiphy;
 import com.fcc.giphyshow.di.application.MainAppScope;
 

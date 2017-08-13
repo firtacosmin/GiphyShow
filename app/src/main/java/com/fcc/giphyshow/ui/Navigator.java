@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
-import com.fcc.giphyshow.ui.details.GifDetailsController;
+import com.fcc.giphyshow.ui.details.view.GifDetailsController;
 import com.fcc.giphyshow.ui.search.view.SearchViewController;
 
 import javax.inject.Inject;
@@ -18,17 +18,19 @@ import javax.inject.Inject;
 public class Navigator {
 
     private Router router;
+    private SearchViewController listViewController;
 
     @Inject
-    public Navigator(Router router){
+    public Navigator(Router router, SearchViewController listViewController){
 
         this.router = router;
+        this.listViewController = listViewController;
     }
 
 
     public void navigateToLandingPage(){
         if (!router.hasRootController()) {
-            router.setRoot(RouterTransaction.with( new SearchViewController()).tag(SearchViewController.TAG));
+            router.setRoot(RouterTransaction.with(listViewController).tag(SearchViewController.TAG));
         }
     }
 

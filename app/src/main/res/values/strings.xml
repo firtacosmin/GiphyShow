@@ -8,4 +8,10 @@
     <string name="desc_upvote_img">upvote image in the details view</string>
     <string name="desc_downvote_img">downvote image description in the details view</string>
     <string name="_0">0</string>
+    <string name="desc_download_image">The download image button</string>
+    <string name="cannor_download_permission">Cannot download without granting the permissions to access the device storage.</string>
+    <string name="download_completed_notif_memssage">File Downloaded</string>
+    <string name="error_on_download_message">Error occured while downloading gif.</string>
+    <string name="error_getting_items">Some error occured trying to get the items. Please check internet connection or try again later.</string>
+    <string name="dowmload_notif_content_text">Downloading File</string>
 </resources>

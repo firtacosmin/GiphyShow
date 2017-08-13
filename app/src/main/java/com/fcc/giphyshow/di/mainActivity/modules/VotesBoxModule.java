@@ -1,7 +1,6 @@
 package com.fcc.giphyshow.di.mainActivity.modules;
 
-import com.fcc.giphyshow.data.votes.Votes;
-import com.fcc.giphyshow.di.details.GifDetailsScope;
+import com.fcc.giphyshow.ui.details.model.Votes;
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
 
 import dagger.Module;

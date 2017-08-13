@@ -40,6 +40,10 @@ public class SearchViewController extends Controller implements ISearchView {
      * the event that will send the search
      */
     private PublishSubject<String> searchEvent = PublishSubject.create();
+    /**
+     * the event that will send the search
+     */
+    private PublishSubject<String> controllerStateEvent = PublishSubject.create();
 
     SearchViewState viewState = new SearchViewState();
 
@@ -60,7 +64,6 @@ public class SearchViewController extends Controller implements ISearchView {
 
 
     public SearchViewController(){
-
     }
 
     @NonNull
@@ -78,7 +81,7 @@ public class SearchViewController extends Controller implements ISearchView {
         act.getDiComponent().injectSearchViewController(this);
         /*will hold the view when detached */
         setRetainViewMode(RetainViewMode.RETAIN_DETACH);
-        presenter.bindView(this);
+//        presenter.bindView(this);
 
         initViewstate(act);
 
@@ -90,7 +93,15 @@ public class SearchViewController extends Controller implements ISearchView {
         binding.list.setLayoutManager(mLayoutManager);
         binding.list.setAdapter(adapter);
 
+        controllerStateEvent.onNext(CREATED);
+
         return binding.getRoot();
+    }
+
+    @Override
+    protected void onDestroyView(@NonNull View view) {
+        super.onDestroyView(view);
+        controllerStateEvent.onNext(DESTROYED);
     }
 
     @Override
@@ -176,11 +187,6 @@ public class SearchViewController extends Controller implements ISearchView {
     }
 
     @Override
-    public void bindPresenter(SearchViewPresenter preseter) {
-        presenter = preseter;
-    }
-
-    @Override
     public Observable<String> searchEvent() {
         return searchEvent;
     }
@@ -190,4 +196,19 @@ public class SearchViewController extends Controller implements ISearchView {
         return mSearchView.getQuery().toString();
     }
 
+    @Override
+    public Observable<SearchItemView> getBindViewHolderObservable(){
+        return adapter.getBindViewHolderObservable();
+    }
+
+    @Override
+    public Observable<Integer> getItemClickObservable(){
+        return adapter.getItemClickObservable();
+    }
+
+
+    @Override
+    public Observable<String> getControllerStateEvent() {
+        return controllerStateEvent;
+    }
 }

@@ -2,10 +2,10 @@ package com.fcc.giphyshow;
 
 import android.app.Application;
 
-import com.fcc.giphyshow.data.search.request.SearchService;
 import com.fcc.giphyshow.di.DaggerMainAppComponent;
 import com.fcc.giphyshow.di.MainAppComponent;
 import com.fcc.giphyshow.di.application.modules.ContextModule;
+import com.fcc.giphyshow.ui.search.model.request.SearchService;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -18,12 +18,6 @@ import javax.inject.Inject;
 public class MainApp extends Application {
 
     private MainAppComponent diComponent;
-
-    @Inject
-    Picasso picasso;
-
-    @Inject
-    SearchService service;
 
     @Override
     public void onCreate() {

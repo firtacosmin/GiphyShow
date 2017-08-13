@@ -1,14 +1,14 @@
 package com.fcc.giphyshow.di.details.modules;
 
-import com.fcc.giphyshow.data.votes.Votes;
-import com.fcc.giphyshow.data.votes.VotesDAO;
+import android.content.Context;
+
+import com.fcc.giphyshow.ui.details.model.VotesDAO;
 import com.fcc.giphyshow.di.details.GifDetailsScope;
 import com.fcc.giphyshow.ui.details.GifDetailsPresenter;
-import com.fcc.giphyshow.ui.details.GifDetailsView;
+import com.fcc.giphyshow.ui.details.view.GifDetailsView;
 
 import dagger.Module;
 import dagger.Provides;
-import io.objectbox.Box;
 
 /**
  * Created by firta on 8/6/2017.
