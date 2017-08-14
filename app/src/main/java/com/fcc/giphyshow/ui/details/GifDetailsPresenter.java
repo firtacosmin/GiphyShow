@@ -52,7 +52,8 @@ public class GifDetailsPresenter {
 
         gifID = element.getId();
         thumbURL = element.getImages().getFixedHeightStill().getUrl();
-        mp4URL = element.getImages().getLooping().getMp4();
+//        mp4URL = element.getImages().getLooping().getMp4();
+        mp4URL = element.getImages().getOriginal().getMp4();
         gifURL = element.getImages().getOriginal().getUrl();
 
         view.printLogo(thumbURL);
