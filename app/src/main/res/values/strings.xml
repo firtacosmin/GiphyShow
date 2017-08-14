@@ -14,4 +14,11 @@
     <string name="error_on_download_message">Error occured while downloading gif.</string>
     <string name="error_getting_items">Some error occured trying to get the items. Please check internet connection or try again later.</string>
     <string name="dowmload_notif_content_text">Downloading File</string>
+    <string name="title_activity_bottom_test">BottomTestActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_search">Search</string>
+    <string name="title_favs">Favorites</string>
+    <string name="imageview_for_seting_as_favorite">desc_fav-img</string>
 </resources>

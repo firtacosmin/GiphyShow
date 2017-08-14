@@ -2,6 +2,7 @@ package com.fcc.giphyshow.di.details.modules;
 
 import android.content.Context;
 
+import com.fcc.giphyshow.ui.details.model.FavoritesDAO;
 import com.fcc.giphyshow.ui.details.model.VotesDAO;
 import com.fcc.giphyshow.di.details.GifDetailsScope;
 import com.fcc.giphyshow.ui.details.GifDetailsPresenter;
@@ -20,7 +21,7 @@ public class GifDetailsPresenterModule {
 
     @GifDetailsScope
     @Provides
-    public GifDetailsPresenter provideGifDetailsPresenter(GifDetailsView view, VotesDAO votesDAO){
-        return  new GifDetailsPresenter(view, votesDAO);
+    public GifDetailsPresenter provideGifDetailsPresenter(GifDetailsView view, FavoritesDAO favDao){
+        return  new GifDetailsPresenter(view, favDao);
     }
 }

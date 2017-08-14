@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.fcc.giphyshow.R;
+import com.fcc.giphyshow.ui.details.model.FavoritesDAO;
 import com.fcc.giphyshow.ui.details.model.VotesDAO;
 import com.fcc.giphyshow.ui.details.view.GifDetailsView;
 import com.fcc.giphyshow.ui.search.model.request.SearchElement;
@@ -32,25 +33,34 @@ public class GifDetailsPresenter {
 
     private GifDetailsView view;
     private SearchElement element;
-    private VotesDAO votesDAO;
+    private FavoritesDAO favDao;
 
-    private int upVotes = 0;
-    private int downVotes = 0;
+    private boolean isFav = false;
+
+    private String thumbURL;
+    private String gifID;
+    private String mp4URL;
+    private String gifURL;
 
     private CompositeDisposable subscriptions = new CompositeDisposable();
 
 
-    public GifDetailsPresenter(GifDetailsView view, VotesDAO votesDAO) {
+    public GifDetailsPresenter(GifDetailsView view, FavoritesDAO favDao) {
         this.view = view;
         element = (SearchElement) view.getArgs().getSerializable(ELEMENT_BUNDLE_KEY);
-        this.votesDAO = votesDAO;
-        view.printLogo(element.getImages().getFixedHeightStill().getUrl());
-        view.startPlayer(element.getImages().getLooping().getMp4());
+        this.favDao = favDao;
+
+        gifID = element.getId();
+        thumbURL = element.getImages().getFixedHeightStill().getUrl();
+        mp4URL = element.getImages().getLooping().getMp4();
+        gifURL = element.getImages().getOriginal().getUrl();
+
+        view.printLogo(thumbURL);
+        view.startPlayer(mp4URL);
         subscriptions.add(view.observeViewState()
-        .subscribe(this::viewStateUpdate));
-
-        getVotesFromBox();
-
+            .subscribe(this::viewStateUpdate));
+        isFav = favDao.getFavorite(gifID) != null;
+        view.setFavState(isFav);
     }
 
     private void viewStateUpdate(String state) {
@@ -66,59 +76,10 @@ public class GifDetailsPresenter {
                 view.printError(R.string.cannor_download_permission);
                 break;
             case PERMISSIONS_GRANTED:
-                view.startDownloadService(element.getImages().getOriginal().getUrl(), element.getId());
+                view.startDownloadService(gifURL, gifID);
                 break;
         }
 
-    }
-
-    /**
-     * method that will get the votes for the printed element
-     */
-    private void getVotesFromBox() {
-        String gifID = element.getId();
-        downVotes = votesDAO.getDownVote(gifID);
-        upVotes = votesDAO.getUpVote(gifID);
-        /*int the vote values and display them*/
-        displayVotes( upVotes, downVotes);
-    }
-
-    public void downVoteClicked() {
-
-        downVotes++;
-        view.setDownVoteCount(downVotes+"");
-        saveVotesToDb();
-    }
-
-    public void upVoteClick() {
-
-        upVotes++;
-        view.setUpVoteCount(upVotes+"");
-        saveVotesToDb();
-
-    }
-
-    private void displayVotes(int upvote, int downvote){
-        view.setDownVoteCount(downvote+"");
-        view.setUpVoteCount(upvote+"");
-    }
-
-
-    private void saveVotesToDb(){
-        votesDAO.updateVote(element.getId(), upVotes, downVotes);
-    }
-
-
-    private Disposable observeUpVoteBtn(){
-        return view.observeUpVoteBtn().subscribe(__ ->{
-           upVoteClick();
-        });
-    }
-
-    private Disposable observeDownVoteBtn(){
-        return view.observeDownVoteBtn().subscribe( __ -> {
-           downVoteClicked();
-        });
     }
 
     public void onDestroyView() {
@@ -126,10 +87,27 @@ public class GifDetailsPresenter {
     }
 
     public void onCreateView() {
-        subscriptions.add(observeUpVoteBtn());
-        subscriptions.add(observeDownVoteBtn());
+        subscriptions.add(observerFavBtn());
         subscriptions.add(observeDownloadBtn());
         subscriptions.add(observeDownloadProgress());
+    }
+
+    private Disposable observerFavBtn() {
+
+        return view.observerFavClick()
+                .subscribe(
+                        __ -> favBtnClick()
+                );
+
+    }
+
+    private void favBtnClick() {
+        if ( isFav ){
+            removeFav();
+        }else{
+            setFav();
+        }
+        view.setFavState(isFav);
     }
 
     private Disposable observeDownloadProgress() {
@@ -156,11 +134,21 @@ public class GifDetailsPresenter {
      */
     private void downloadImage() {
         if ( view.checkPermission() ) {
-            view.startDownloadService(element.getImages().getOriginal().getUrl(), element.getId());
+            view.startDownloadService(gifURL, gifID);
         }else{
             view.requestPermission();
         }
 
 
+    }
+
+
+    private void setFav(){
+        favDao.addFavGif(gifID, thumbURL, mp4URL, gifURL);
+        isFav = true;
+    }
+    private void removeFav(){
+        favDao.removeFavGif(gifID);
+        isFav = false;
     }
 }

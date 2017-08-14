@@ -6,15 +6,10 @@ import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluelinelabs.conductor.Controller;
@@ -26,14 +21,11 @@ import com.fcc.giphyshow.di.GifDetailsComponent;
 import com.fcc.giphyshow.di.details.modules.GifDetailsViewModule;
 import com.fcc.giphyshow.ui.details.DownloadService;
 import com.fcc.giphyshow.ui.details.GifDetailsPresenter;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
@@ -112,7 +104,6 @@ public class GifDetailsController extends Controller implements GifDetailsView{
     @Override
     protected void onDestroyView(@NonNull View view) {
         super.onDestroyView(view);
-//        presenter.onDestroyView();
         controllerState.onNext(VIEW_DESTROYED);
         activity = null;
     }
@@ -162,7 +153,6 @@ public class GifDetailsController extends Controller implements GifDetailsView{
     public void printLogo(String logoURL) {
         detailsViewState.setLogoImageURL(logoURL);
         binding.invalidateAll();
-//        picasso.load(logoURL).into(logoImg);
     }
 
     @Override
@@ -171,23 +161,17 @@ public class GifDetailsController extends Controller implements GifDetailsView{
     }
 
     @Override
-    public void setUpVoteCount(String count) {
-//        upVoteTxt.setText(count);
-        detailsViewState.setUpVote_count(count);
-        binding.invalidateAll();
+    public void setFavState(Boolean isFav) {
+        if ( isFav )
+        {
+//            picasso.load(R.drawable.fav_on).into(binding.favImg);
+            binding.favImg.setImageResource(R.drawable.fav_on);
+        }else{
+//            picasso.load(R.drawable.fav_off).into(binding.favImg);
+            binding.favImg.setImageResource(R.drawable.fav_off);
+        }
     }
 
-    @Override
-    public void setDownVoteCount(String count) {
-//        downVoteTxt.setText(count);
-        detailsViewState.setDownVote_count(count);
-        binding.invalidateAll();
-    }
-
-    @Override
-    public Observable<Object> observeUpVoteBtn() {
-        return RxView.clicks(binding.upvoteImg);
-    }
 
     @Override
     public Observable<Object> observeDownloadBtn() {
@@ -195,8 +179,8 @@ public class GifDetailsController extends Controller implements GifDetailsView{
     }
 
     @Override
-    public Observable<Object> observeDownVoteBtn() {
-        return RxView.clicks(binding.downvoteImg);
+    public Observable<Object> observerFavClick(){
+        return RxView.clicks(binding.favImg);
     }
 
     @Override
@@ -237,7 +221,6 @@ public class GifDetailsController extends Controller implements GifDetailsView{
 
     @Override
     public void requestPermission(){
-//        ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},PERMISSION_REQUEST_CODE);
         requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},PERMISSION_REQUEST_CODE);
     }
 

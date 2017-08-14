@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'io.objectbox'
 
-
 //apply plugin: 'com.neenbedankt.android-apt'
 
 android {
@@ -58,10 +57,6 @@ dependencies {
 //    testCompile "org.powermock:powermock-core:$powermock"
 //    testCompile "org.powermock:powermock-module-junit4-rule:$powermock"
 
-
-
-
-
     //dagger
     compile "com.google.dagger:dagger:$dagger"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger"
@@ -100,4 +95,5 @@ dependencies {
     compile "com.github.bumptech.glide:glide:$glideVersion"
 
 
+    compile 'com.android.support:design:26.+'
 }

@@ -14,6 +14,7 @@
         },
         {
           "id": "2:7433510747684695283",
+          "indexId": "1:1277275636734854636",
           "name": "gif_id"
         },
         {
@@ -28,7 +29,7 @@
     }
   ],
   "lastEntityId": "1:506129704422444604",
-  "lastIndexId": "0:0",
+  "lastIndexId": "1:1277275636734854636",
   "lastSequenceId": "0:0",
   "modelVersion": 2,
   "retiredEntityUids": [],

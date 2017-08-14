@@ -25,14 +25,12 @@ public interface GifDetailsView {
 
     void printLogo(String logoURL);
     void startPlayer(String playbackURL);
-    void setUpVoteCount(String count);
-    void setDownVoteCount(String count);
+    void setFavState(Boolean isFav);
     Bundle getArgs();
 
 
-    Observable<Object> observeUpVoteBtn();
+    Observable<Object> observerFavClick();
     Observable<Object> observeDownloadBtn();
-    Observable<Object> observeDownVoteBtn();
 
     Observable<String> observeViewState();
 

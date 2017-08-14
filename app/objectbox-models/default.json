@@ -26,10 +26,38 @@
           "name": "downvote_count"
         }
       ]
+    },
+    {
+      "id": "2:1466353050112619528",
+      "lastPropertyId": "5:8652201791624581043",
+      "name": "Favorites",
+      "properties": [
+        {
+          "id": "1:557970961759924813",
+          "name": "id"
+        },
+        {
+          "id": "2:8425527390026658379",
+          "indexId": "2:7691746305973778376",
+          "name": "gif_id"
+        },
+        {
+          "id": "3:7103613781355968316",
+          "name": "thumbnailURL"
+        },
+        {
+          "id": "4:6110683699882965831",
+          "name": "mp4_url"
+        },
+        {
+          "id": "5:8652201791624581043",
+          "name": "gif_download_url"
+        }
+      ]
     }
   ],
-  "lastEntityId": "1:506129704422444604",
-  "lastIndexId": "1:1277275636734854636",
+  "lastEntityId": "2:1466353050112619528",
+  "lastIndexId": "2:7691746305973778376",
   "lastSequenceId": "0:0",
   "modelVersion": 2,
   "retiredEntityUids": [],

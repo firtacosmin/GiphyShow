@@ -1,6 +1,5 @@
 package com.fcc.giphyshow.ui.details.model;
 
-import com.fcc.giphyshow.data.votes.Votes_;
 
 import java.util.List;
 

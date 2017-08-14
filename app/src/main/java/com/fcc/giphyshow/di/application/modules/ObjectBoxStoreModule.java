@@ -2,8 +2,8 @@ package com.fcc.giphyshow.di.application.modules;
 
 import android.content.Context;
 
-import com.fcc.giphyshow.data.votes.MyObjectBox;
 import com.fcc.giphyshow.di.application.MainAppScope;
+import com.fcc.giphyshow.ui.details.model.MyObjectBox;
 
 import dagger.Module;
 import dagger.Provides;

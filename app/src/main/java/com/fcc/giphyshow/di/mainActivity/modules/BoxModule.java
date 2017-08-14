@@ -1,5 +1,6 @@
 package com.fcc.giphyshow.di.mainActivity.modules;
 
+import com.fcc.giphyshow.ui.details.model.Favorites;
 import com.fcc.giphyshow.ui.details.model.Votes;
 import com.fcc.giphyshow.di.mainActivity.MainActivityScope;
 
@@ -14,12 +15,18 @@ import io.objectbox.BoxStore;
  */
 
 @Module
-public class VotesBoxModule {
+public class BoxModule {
 
     @MainActivityScope
     @Provides
     public Box<Votes> provideVotesBox(BoxStore boxStore){
         return boxStore.boxFor(Votes.class);
+    }
+
+    @MainActivityScope
+    @Provides
+    public Box<Favorites> provideFavoritesBox(BoxStore boxStore){
+        return boxStore.boxFor(Favorites.class);
     }
 
 }
